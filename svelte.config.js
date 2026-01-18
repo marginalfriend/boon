@@ -51,7 +51,7 @@ const config = {
 	kit: {
 		adapter: adapter({ strict: false }),
 		paths: {
-			base: process.env.NODE_ENV === "production" ? "/your-repo-name" : "",
+			base: "",
 		},
 		alias: {
 			$content: "src/content",
