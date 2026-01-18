@@ -1,0 +1,129 @@
+---
+title: "CLI Toolkit"
+description: "A collection of fast, ergonomic command-line utilities built in Rust for everyday developer tasks"
+tags: ["rust", "cli", "developer-tools"]
+githubUrl: "https://github.com/username/cli-toolkit"
+---
+
+## CLI Toolkit
+
+A growing collection of command-line utilities designed to solve everyday developer annoyances. Built in Rust for speed and reliability, with a focus on ergonomic interfaces.
+
+### Motivation
+
+I found myself repeatedly writing bash one-liners for common tasks—comparing environment files, formatting JSON, searching git history. Each script worked, but they were slow, inconsistent, and hard to remember.
+
+This toolkit consolidates those utilities into fast, well-documented commands with consistent interfaces.
+
+### Tools Included
+
+#### `envdiff` — Environment File Comparison
+
+Compare `.env` files across environments, highlighting differences:
+
+```bash
+$ envdiff .env.local .env.production
+
+┌─────────────────────────────────────────────┐
+│ Environment Comparison                       │
+├─────────────┬──────────────┬────────────────┤
+│ Key         │ .env.local   │ .env.production│
+├─────────────┼──────────────┼────────────────┤
+│ DATABASE_URL│ localhost:5432│ db.prod:5432  │
+│ DEBUG       │ true         │ (missing)      │
+│ API_KEY     │ dev_xxx      │ prod_xxx       │
+└─────────────┴──────────────┴────────────────┘
+```
+
+Features:
+- Detects missing keys in either file
+- Masks sensitive values with `--redact` flag
+- Outputs in JSON, table, or diff format
+
+#### `jf` — JSON Formatter & Validator
+
+A faster alternative to `jq` for common operations:
+
+```bash
+# Pretty print
+$ cat data.json | jf
+
+# Minify
+$ jf -m data.json
+
+# Validate and report errors
+$ jf --validate api-response.json
+✓ Valid JSON (324 objects, 2.1 KB)
+
+# Extract field
+$ jf '.users[0].name' data.json
+```
+
+Benchmarks show 3-5x speed improvement over `jq` for large files.
+
+#### `gf` — Git Fuzzy Finder
+
+Interactive git operations with fuzzy search:
+
+```bash
+# Fuzzy switch branch
+$ gf branch
+> feature/   # Type to filter
+  feature/auth-system
+  feature/dashboard
+  feature/api-v2
+
+# Fuzzy checkout commit
+$ gf log
+> fix       # Search commit messages
+  a]2f4d - fix: resolve auth bug
+  c8e1a - fix: correct typo in readme
+
+# Interactive stash management
+$ gf stash
+```
+
+### Architecture
+
+```
+cli-toolkit/
+├── crates/
+│   ├── envdiff/      # Environment comparison
+│   ├── jf/           # JSON formatter
+│   ├── gf/           # Git fuzzy finder
+│   └── shared/       # Common utilities
+├── Cargo.toml        # Workspace config
+└── README.md
+```
+
+Each tool is a separate crate, sharing common code for:
+- Terminal colors and formatting
+- Configuration file handling
+- Error messages and help text
+
+### Technical Highlights
+
+**Zero-copy JSON parsing** — The `jf` tool uses `simd-json` for SIMD-accelerated parsing, processing files without unnecessary allocations.
+
+**Async git operations** — `gf` uses async Rust to query git in parallel, making branch/commit listing instant even in large repositories.
+
+**Cross-platform** — All tools work on Linux, macOS, and Windows with native terminal support.
+
+### Installation
+
+```bash
+# From crates.io
+cargo install cli-toolkit
+
+# From source
+git clone https://github.com/username/cli-toolkit
+cd cli-toolkit
+cargo install --path .
+```
+
+### What I Learned
+
+- Rust's CLI ecosystem (clap, crossterm) is remarkably mature
+- Small tools benefit enormously from good defaults
+- Performance matters—fast tools get used more often
+- Writing documentation forces you to simplify interfaces

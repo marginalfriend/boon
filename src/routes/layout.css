@@ -1,0 +1,596 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+	/* TUI-inspired palette */
+	--tui-bg: #0f1419;
+	--tui-bg-alt: #151b22;
+	--tui-border: #3b4752;
+	--tui-border-highlight: #5c6a77;
+	--tui-text: #c5cdd8;
+	--tui-text-dim: #6b7785;
+	--tui-accent: #4a9eff;
+	--tui-accent-hover: #6bb3ff;
+	--tui-link: #5dade2;
+	--tui-link-visited: #af7ac5;
+	--tui-highlight: #2d3a47;
+	--tui-success: #58d68d;
+	--tui-warning: #f4d03f;
+	
+	/* Fonts */
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--font-serif: 'Crimson Pro', 'Georgia', 'Times New Roman', serif;
+}
+
+@theme {
+	--font-mono: var(--font-mono);
+	--font-serif: var(--font-serif);
+}
+
+/* Base styles */
+html {
+	background: var(--tui-bg);
+	scrollbar-color: var(--tui-border) var(--tui-bg);
+}
+
+body {
+	font-family: var(--font-serif);
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.7;
+	color: var(--tui-text);
+	background: var(--tui-bg);
+}
+
+/* Selection styling */
+::selection {
+	background: var(--tui-accent);
+	color: var(--tui-bg);
+}
+
+/* TUI Box frame - top and bottom decorative bars */
+.tui-border-top,
+.tui-border-bottom {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	color: var(--tui-border);
+	background: var(--tui-bg-alt);
+	padding: 6px 12px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid var(--tui-border);
+}
+
+.tui-border-top {
+	border-bottom: none;
+	border-radius: 4px 4px 0 0;
+}
+
+.tui-border-bottom {
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+}
+
+.tui-corner {
+	color: var(--tui-border-highlight);
+	flex-shrink: 0;
+}
+
+.tui-title {
+	color: var(--tui-accent);
+	flex-shrink: 0;
+	font-weight: 500;
+}
+
+.tui-line-fill {
+	flex-grow: 1;
+	height: 1px;
+	background: var(--tui-border);
+	opacity: 0.5;
+}
+
+.tui-status-text {
+	color: var(--tui-text-dim);
+	flex-shrink: 0;
+}
+
+.tui-status-right {
+	color: var(--tui-text-dim);
+	flex-shrink: 0;
+	font-size: 11px;
+}
+
+/* Main content area */
+.tui-content {
+	background: var(--tui-bg);
+	border-left: 1px solid var(--tui-border);
+	border-right: 1px solid var(--tui-border);
+}
+
+/* Wikipedia-style prose content */
+.wiki-prose {
+	font-family: var(--font-serif);
+	color: var(--tui-text);
+}
+
+.wiki-prose :where(h1, h2, h3, h4, h5, h6) {
+	font-family: var(--font-serif);
+	font-weight: 600;
+	color: var(--tui-text);
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	padding-bottom: 0.25em;
+	border-bottom: 1px solid var(--tui-border);
+}
+
+.wiki-prose :where(h1) {
+	font-size: 1.75em;
+	border-bottom: 2px solid var(--tui-border);
+}
+
+.wiki-prose :where(h2) {
+	font-size: 1.5em;
+}
+
+.wiki-prose :where(h3) {
+	font-size: 1.25em;
+	border-bottom: none;
+}
+
+.wiki-prose :where(h3)::before {
+	content: "### ";
+	font-family: var(--font-mono);
+	font-size: 0.75em;
+	color: var(--tui-text-dim);
+}
+
+.wiki-prose :where(p) {
+	margin-bottom: 1em;
+	text-align: justify;
+	hyphens: auto;
+}
+
+.wiki-prose :where(a) {
+	color: var(--tui-link);
+	text-decoration: none;
+	border-bottom: 1px dotted var(--tui-link);
+	transition: color 0.15s, border-color 0.15s;
+}
+
+.wiki-prose :where(a):hover {
+	color: var(--tui-accent-hover);
+	border-bottom-style: solid;
+}
+
+.wiki-prose :where(a):visited {
+	color: var(--tui-link-visited);
+	border-color: var(--tui-link-visited);
+}
+
+/* Wikipedia-style blockquote */
+.wiki-prose :where(blockquote) {
+	font-style: italic;
+	border-left: 3px solid var(--tui-border);
+	margin: 0;
+	padding: 0.5em 1em;
+	background: var(--tui-bg-alt);
+	color: var(--tui-text-dim);
+	font-family: var(--font-serif);
+}
+
+/* Inline code - TUI style (excludes code inside pre/Shiki blocks) */
+.wiki-prose :where(:not(pre) > code) {
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+	background: var(--tui-highlight);
+	color: var(--tui-success);
+	padding: 0.125em 0.375em;
+	border: 1px solid var(--tui-border);
+}
+
+/* Code blocks - TUI terminal style (excludes Shiki blocks) */
+.wiki-prose :where(pre:not(.shiki)) {
+	font-family: var(--font-mono);
+	font-size: 14px;
+	background: var(--tui-bg-alt);
+	border: 1px solid var(--tui-border);
+	padding: 1em;
+	overflow-x: auto;
+	position: relative;
+}
+
+.wiki-prose :where(pre:not(.shiki))::before {
+	content: "┌──────────────────────────────────────";
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 12px;
+	color: var(--tui-border);
+}
+
+/* Lists with TUI markers */
+.wiki-prose :where(ul) {
+	list-style: none;
+	padding-left: 1.5em;
+}
+
+.wiki-prose :where(ul li)::before {
+	content: "• ";
+	font-family: var(--font-mono);
+	color: var(--tui-text-dim);
+	margin-left: -1.5em;
+	position: absolute;
+}
+
+.wiki-prose :where(ul li) {
+	position: relative;
+	margin-bottom: 0.5em;
+}
+
+.wiki-prose :where(ol) {
+	padding-left: 1.5em;
+}
+
+.wiki-prose :where(ol li) {
+	margin-bottom: 0.5em;
+}
+
+/* Strong and emphasis */
+.wiki-prose :where(strong) {
+	font-weight: 700;
+	color: var(--tui-text);
+}
+
+.wiki-prose :where(em) {
+	font-style: italic;
+	color: var(--tui-text);
+}
+
+/* TUI Navigation bar styling */
+.tui-nav {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	background: var(--tui-bg-alt);
+}
+
+.tui-nav a {
+	color: var(--tui-text);
+	text-decoration: none;
+	transition: background 0.1s, color 0.1s;
+	display: block;
+	padding: 8px 16px;
+	border-right: 1px solid var(--tui-border);
+}
+
+.tui-nav a:last-child {
+	border-right: none;
+}
+
+.tui-nav a:hover {
+	background: var(--tui-highlight);
+	color: var(--tui-accent);
+}
+
+.tui-nav a.active {
+	background: var(--tui-accent);
+	color: var(--tui-bg);
+}
+
+/* TUI breadcrumb / path display */
+.tui-path {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--tui-text-dim);
+	background: var(--tui-bg);
+	padding: 6px 12px;
+	border-top: 1px solid var(--tui-border);
+}
+
+.tui-path::before {
+	content: "$ pwd: ";
+	color: var(--tui-success);
+}
+
+/* Wikipedia-style table of contents indicator */
+.toc-marker {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--tui-text-dim);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--tui-bg);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--tui-border);
+	border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--tui-border-highlight);
+}
+
+/* Main container adjustments */
+.main-container {
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+/* Cursor blink animation for TUI feel */
+@keyframes cursor-blink {
+	0%, 50% { opacity: 1; }
+	51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+	content: "█";
+	animation: cursor-blink 1s infinite;
+	font-family: var(--font-mono);
+	color: var(--tui-accent);
+}
+
+/* Override Tailwind prose defaults */
+.prose {
+	--tw-prose-body: var(--tui-text);
+	--tw-prose-headings: var(--tui-text);
+	--tw-prose-links: var(--tui-link);
+	--tw-prose-bold: var(--tui-text);
+	--tw-prose-quotes: var(--tui-text-dim);
+	--tw-prose-quote-borders: var(--tui-border);
+	--tw-prose-code: var(--tui-success);
+	--tw-prose-pre-bg: var(--tui-bg-alt);
+	max-width: none;
+}
+
+.prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
+	margin-top: 1.25em;
+	margin-bottom: 0.5em;
+	font-family: var(--font-serif);
+	border-bottom: 1px solid var(--tui-border);
+	padding-bottom: 0.25em;
+}
+
+.prose :where(h3):not(:where([class~="not-prose"] *))::before {
+	content: "§ ";
+	font-family: var(--font-mono);
+	font-size: 0.8em;
+	color: var(--tui-text-dim);
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+	color: var(--tui-link);
+	text-decoration: none;
+	border-bottom: 1px dotted currentColor;
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)):hover {
+	color: var(--tui-accent-hover);
+	border-bottom-style: solid;
+}
+
+.prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+	border-left-color: var(--tui-border);
+	background: var(--tui-bg-alt);
+	padding: 0.1em 1em;
+	font-style: italic;
+}
+
+/* Remove Tailwind prose backticks from inline code */
+.prose :where(code):not(:where([class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"] *))::after {
+	content: none;
+}
+
+/* Exclude Shiki code blocks from prose styling */
+.prose :where(pre.shiki):not(:where([class~="not-prose"] *)) {
+	margin: 0;
+}
+
+.prose :where(pre.shiki code):not(:where([class~="not-prose"] *)) {
+	background: transparent;
+	border: none;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
+}
+
+.prose :where(pre.shiki code)::before,
+.prose :where(pre.shiki code)::after {
+	content: none;
+}
+
+/* ============================================
+   TUI Table Styles for Content Listings
+   ============================================ */
+
+.tui-table {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	border: 1px solid var(--tui-border);
+	background: var(--tui-bg);
+}
+
+.tui-table-header {
+	display: flex;
+	background: var(--tui-bg-alt);
+	border-bottom: 1px solid var(--tui-border);
+	padding: 8px 12px;
+	color: var(--tui-text-dim);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 11px;
+}
+
+.tui-table-body {
+	display: flex;
+	flex-direction: column;
+}
+
+.tui-table-row {
+	display: flex;
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--tui-border);
+	color: var(--tui-text);
+	text-decoration: none;
+	transition: background 0.1s;
+}
+
+.tui-table-row:last-child {
+	border-bottom: none;
+}
+
+.tui-table-row:hover {
+	background: var(--tui-highlight);
+}
+
+.tui-table-row:hover .tui-row-title {
+	color: var(--tui-accent);
+}
+
+.tui-col-date {
+	flex-shrink: 0;
+	width: 100px;
+	color: var(--tui-text-dim);
+}
+
+.tui-col-title {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.tui-col-tags {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	justify-content: flex-end;
+	min-width: 150px;
+}
+
+.tui-row-title {
+	color: var(--tui-text);
+	transition: color 0.1s;
+}
+
+/* Tags */
+.tui-tag {
+	font-size: 10px;
+	padding: 2px 6px;
+	background: var(--tui-highlight);
+	border: 1px solid var(--tui-border);
+	color: var(--tui-text-dim);
+	border-radius: 2px;
+}
+
+.tui-tag-more {
+	font-size: 10px;
+	color: var(--tui-text-dim);
+}
+
+.tui-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+/* Badge for drafts */
+.tui-badge-draft {
+	font-size: 10px;
+	color: var(--tui-warning);
+	font-weight: 500;
+}
+
+/* Empty state */
+.tui-empty {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	padding: 24px;
+	text-align: center;
+	color: var(--tui-text-dim);
+	border: 1px dashed var(--tui-border);
+	background: var(--tui-bg-alt);
+}
+
+/* Breadcrumb navigation */
+.tui-breadcrumb {
+	font-family: var(--font-mono);
+	font-size: 12px;
+}
+
+.tui-breadcrumb a {
+	color: var(--tui-text-dim);
+	text-decoration: none;
+	transition: color 0.1s;
+}
+
+.tui-breadcrumb a:hover {
+	color: var(--tui-accent);
+}
+
+/* Meta information (date, tags on detail pages) */
+.tui-meta {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--tui-text-dim);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-top: 8px;
+}
+
+.tui-meta-date {
+	color: var(--tui-text-dim);
+}
+
+/* External links on portfolio detail */
+.tui-links {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	display: flex;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.tui-link {
+	color: var(--tui-accent);
+	text-decoration: none;
+	transition: color 0.1s;
+}
+
+.tui-link:hover {
+	color: var(--tui-accent-hover);
+}
+
+/* Wiki content wrapper (for MDX rendered content) */
+.wiki-content {
+	margin-top: 24px;
+}
+
+/* Shiki syntax highlighting */
+pre.shiki {
+	font-family: var(--font-mono);
+	font-size: 14px;
+	padding: 1em;
+	overflow-x: auto;
+	border: 1px solid var(--tui-border);
+	border-radius: 4px;
+}
+
+pre.shiki code {
+	background: transparent;
+	border: none;
+	padding: 0;
+}

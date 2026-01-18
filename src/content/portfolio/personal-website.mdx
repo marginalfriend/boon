@@ -1,0 +1,84 @@
+---
+title: "Personal Website"
+description: "A TUI-inspired personal website combining terminal aesthetics with Wikipedia-style content presentation"
+tags: ["svelte", "typescript", "mdx", "tailwind"]
+githubUrl: "https://github.com/username/boon"
+---
+
+## Personal Website
+
+The site you're currently viewing. A deliberate departure from conventional web design, blending the efficiency of Terminal User Interfaces with the readability of traditional encyclopedic layouts.
+
+### Design Philosophy
+
+Most personal websites follow predictable patterns—hero sections, card grids, gradient backgrounds. I wanted something different: a design that reflects my appreciation for command-line interfaces while remaining accessible to everyone.
+
+**Key design decisions:**
+
+- **Dual typography** — Monospace (`IBM Plex Mono`) for UI elements, Serif (`Crimson Pro`) for content
+- **Dark terminal palette** — Easy on the eyes, reminiscent of late-night coding sessions
+- **Box-drawing aesthetics** — Subtle nods to TUI frameworks like `ncurses`
+- **Wikipedia-style content** — Section markers, justified text, and information density
+
+### Technical Implementation
+
+#### Content Management with MDX
+
+All content is written in MDX files with YAML frontmatter:
+
+```yaml
+---
+title: "Post Title"
+date: "2026-01-18"
+description: "Brief description"
+---
+
+Content goes here with **full Markdown** support.
+```
+
+The build system uses `mdsvex` to process MDX files, extracting metadata and rendering content as Svelte components.
+
+#### Type-Safe Content Loading
+
+```typescript
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const modules = import.meta.glob("/src/content/blogs/*.mdx", {
+    eager: true,
+    import: "metadata",
+  });
+  // ... process and return typed posts
+}
+```
+
+#### Responsive TUI Frame
+
+The terminal-style frame adapts gracefully:
+
+- Full decorative borders on desktop
+- Simplified borders on mobile
+- Content always remains readable
+
+### Challenges & Solutions
+
+**Challenge:** Making box-drawing characters align with CSS borders.
+
+**Solution:** Used CSS-only approach with pseudo-elements for decorative lines, avoiding pixel-perfect character alignment issues.
+
+**Challenge:** Balancing terminal aesthetics with accessibility.
+
+**Solution:** Maintained proper contrast ratios, semantic HTML, and keyboard navigation despite the unconventional visual design.
+
+### Performance
+
+- **Static generation** — All pages pre-rendered at build time
+- **Minimal JavaScript** — Svelte's compilation approach means tiny bundles
+- **No external fonts blocking render** — Font loading optimized with `display: swap`
+
+### What I Learned
+
+Building this site reinforced several principles:
+
+1. Constraints breed creativity—the TUI limitation led to interesting solutions
+2. Typography matters more than graphics for content-focused sites
+3. Static site generators have come remarkably far
+4. Writing about your work forces you to understand it better
