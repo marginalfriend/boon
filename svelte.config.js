@@ -45,6 +45,7 @@ const mdsvexOptions = {
 	},
 };
 
+// Export config
 const config = {
 	extensions: [".svelte", ".mdx"],
 	preprocess: [mdsvex(mdsvexOptions)],
